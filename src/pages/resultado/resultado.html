@@ -1,0 +1,48 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Resultados</ion-title>
+    <button ion-button clear>
+      <ion-icon name="refresh"></ion-icon>
+    </button>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-list>
+      <ion-item>
+        <ion-select [(ngModel)]="selectDefault" (ionChange)="partidas($event)">
+          <ion-label>Escolha uma data...</ion-label>
+          <ion-option *ngFor="let option of rounds$ | async" [disabled]="option.nextId>dateNow">{{ option.name }}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
+  <ion-card *ngFor="let jogo of jogos$ | async">
+    <button ion-item (click)="apostas(jogo)">
+      <ion-grid [id]="jogo.id">
+        <ion-row>
+          <ion-col text-center>{{ jogo.formatedStartDate }} {{ jogo.startTime }}</ion-col>
+        </ion-row>
+        <ion-row align-items-center>
+          <ion-col>
+            <img [src]="jogo.homeLogo" />
+            <p text-center>{{ jogo.homeTeam }}</p>
+          </ion-col>
+          <ion-col text-center col-2 style="font-size: 25px" [id]="jogo.homeSlug">{{ jogo.homeScore }}</ion-col>
+          <ion-col text-center col-1>X</ion-col>
+          <ion-col text-center col-2 style="font-size: 25px" [id]="jogo.awaySlug">{{ jogo.awayScore }}</ion-col>
+          <ion-col>
+            <img [src]="jogo.awayLogo" />
+            <p text-center>{{ jogo.awayTeam }}</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </button>
+  </ion-card>
+
+</ion-content>

@@ -1,6 +1,5 @@
 {
-  "name": "paulista",
+  "name": "New Ionic App",
   "integrations": {},
-  "type": "ionic-angular",
-  "id": "d03e6956"
+  "type": "ionic-angular"
 }

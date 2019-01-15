@@ -1,0 +1,58 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Palpites</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-list>
+      <ion-item>
+        <ion-select [(ngModel)]="selectDefault" (ionChange)="roundMatches()">
+          <ion-label>Escolha a rodada...</ion-label>
+          <ion-option *ngFor="let option of rounds$ | async" [disabled]="option.prev>dateNow" (ionSelect)="setIdRound(option.round)">{{ option.name }}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
+  <form #form="ngForm" (ngSubmit)="onSubmit()">
+
+    <ion-card *ngFor="let match of matches$ | async">
+      <ion-grid [id]="match.id">
+        <ion-row>
+          <ion-col text-center [id]="match.round">{{ match.formatedStartDate }} {{ match.startTime }}</ion-col>
+        </ion-row>
+        <ion-row align-items-center>
+          <ion-col>
+            <img [src]="match.homeLogo" />
+            <ion-label text-center>{{ match.homeTeam }}</ion-label>
+          </ion-col>
+          <ion-col text-center col-2>
+            <input class="ipt-gol" text-center type="text" [value]="match.homeScore" [id]="match.homeSlug" required pattern="^[0-9]"
+              autocomplete="off" [disabled]="dateFech<=dateHoje">
+          </ion-col>
+          <ion-col text-center col-1>X</ion-col>
+          <ion-col text-center col-2>
+            <input class="ipt-gol" text-center type="text" [value]="match.awayScore" [id]="match.awaySlug" required pattern="^[0-9]"
+              autocomplete="off" [disabled]="dateFech<=dateHoje">
+          </ion-col>
+          <ion-col>
+            <img [src]="match.awayLogo" />
+            <ion-label text-center>{{ match.awayTeam }}</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-icon name="checkmark-circle" color="success" *ngIf="match.saved"></ion-icon>
+      </ion-grid>
+    </ion-card>
+
+    <div padding>
+      <button ion-button full large type="submit" [disabled]="dateFech<=dateHoje">Gravar</button>
+    </div>
+
+  </form>
+
+</ion-content>

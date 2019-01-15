@@ -1,0 +1,32 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Apostas</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-card *ngFor="let aposta of apostas">
+    <ion-grid>
+      <ion-row>
+        <ion-col text-center>{{ aposta.nickname }} gravado em {{ aposta.update }}</ion-col>
+      </ion-row>
+      <ion-row align-items-center>
+        <ion-col>
+          <img src="{{ aposta.homeLogo }}" />
+          <ion-label text-center>{{ aposta.homeTeam }}</ion-label>
+        </ion-col>
+        <ion-col text-center col-2 style="font-size: 25px">{{ aposta?.homeScore }}</ion-col>
+        <ion-col text-center col-1>X</ion-col>
+        <ion-col text-center col-2 style="font-size: 25px">{{ aposta?.awayScore }}</ion-col>
+        <ion-col>
+          <img src="{{ aposta.awayLogo }}" />
+          <ion-label text-center>{{ aposta.awayTeam }}</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+</ion-content>
