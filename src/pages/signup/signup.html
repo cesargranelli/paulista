@@ -1,6 +1,6 @@
 <ion-header>
 
-  <ion-navbar color="primary">
+  <ion-navbar color="primeira">
     <ion-title>Sign Up</ion-title>
   </ion-navbar>
 
@@ -9,7 +9,7 @@
 <ion-content padding scroll="false">
 
   <h1 text-center>
-    <ion-icon name="person-add" color="primary" class="auth-icon"></ion-icon>
+    <ion-icon name="person-add" color="primeira" class="auth-icon"></ion-icon>
   </h1>
 
   <form [formGroup]="signupForm" (ngSubmit)="onSubmit(); $event.preventDefault()">
@@ -17,22 +17,22 @@
     <div padding>
 
       <ion-item>
-        <ion-icon name="person" item-left color="primary"></ion-icon>
+        <ion-icon name="person" item-left color="primeira"></ion-icon>
         <ion-input type="text" placeholder="Name" formControlName="name"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-icon name="key" item-left color="primary"></ion-icon>
+        <ion-icon name="key" item-left color="primeira"></ion-icon>
         <ion-input type="text" placeholder="Nickname" formControlName="nickname"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-icon name="at" item-left color="primary"></ion-icon>
+        <ion-icon name="at" item-left color="primeira"></ion-icon>
         <ion-input type="text" placeholder="Email" formControlName="email" value="{{email}}"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-icon name="lock" item-left color="primary"></ion-icon>
+        <ion-icon name="lock" item-left color="primeira"></ion-icon>
         <ion-input type="password" placeholder="Password" formControlName="password" value="{{password}}"></ion-input>
       </ion-item>
 

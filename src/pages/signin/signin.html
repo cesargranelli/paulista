@@ -1,39 +1,24 @@
 <ion-header>
-
-  <ion-navbar color="primary">
+  <ion-navbar color="primeira">
     <ion-title>Sign In</ion-title>
   </ion-navbar>
-
 </ion-header>
-
-<ion-content padding scroll="false">
-
-  <h1 text-center>
-    <ion-icon name="football" color="primary" class="auth-icon"></ion-icon>
-  </h1>
-
+<ion-content scroll="false">
+  <ion-img width="300" height="270" src="../../assets/imgs/logo-p19.jpg" class="logo-signin"></ion-img>
   <form [formGroup]="signinForm" (ngSubmit)="onSubmit(); $event.preventDefault()">
-
-    <div padding>
-
+    <div padding-right>
       <ion-item>
-        <ion-icon name="at" item-left color="primary"></ion-icon>
+        <ion-icon name="at" item-left color="primeira"></ion-icon>
         <ion-input type="text" placeholder="Email" formControlName="email"></ion-input>
       </ion-item>
-
       <ion-item>
-        <ion-icon name="lock" item-left color="primary"></ion-icon>
+        <ion-icon name="lock" item-left color="primeira"></ion-icon>
         <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
       </ion-item>
-
     </div>
-
     <div padding>
-      <button ion-button full large type="submit" [disabled]="signinForm.invalid">Enter</button>
+      <button ion-button full type="submit" color="primeira" [disabled]="signinForm.invalid">Enter</button>
     </div>
-
   </form>
-
-  <button ion-button full large clear text-center (click)="onSignup()">Sign Up</button>
-
+  <button ion-button full clear text-center color="primeira" (click)="onSignup()">Sign Up</button>
 </ion-content>
