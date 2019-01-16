@@ -2,9 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { AngularFireAuth } from '@angular/fire/auth';
+import { UserCredential } from 'firebase/auth';
 import { BaseProvider } from './../base/base';
-
-import 'rxjs/add/operator/first';
 
 @Injectable()
 export class AuthProvider extends BaseProvider {
@@ -16,7 +15,7 @@ export class AuthProvider extends BaseProvider {
     super();
   }
 
-  createAuthUser(user: { email: string, password: string }): Promise<any> {
+  createAuthUser(user: { email: string, password: string }): Promise<UserCredential> {
     return this.angularFireAuth.auth.createUserWithEmailAndPassword(user.email, user.password);
   }
 
@@ -31,7 +30,6 @@ export class AuthProvider extends BaseProvider {
   get authenticated(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.angularFireAuth.authState
-        .first()
         .subscribe(isAuthenticated => {
           (isAuthenticated) ? resolve(true) : reject(false);
         });

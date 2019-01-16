@@ -1,47 +1,33 @@
 <ion-header>
-
   <ion-navbar color="primeira">
     <ion-title>Sign Up</ion-title>
   </ion-navbar>
-
 </ion-header>
-
-<ion-content padding scroll="false">
-
+<ion-content scroll="false">
   <h1 text-center>
     <ion-icon name="person-add" color="primeira" class="auth-icon"></ion-icon>
   </h1>
-
   <form [formGroup]="signupForm" (ngSubmit)="onSubmit(); $event.preventDefault()">
-
-    <div padding>
-
+    <div padding-right>
       <ion-item>
         <ion-icon name="person" item-left color="primeira"></ion-icon>
         <ion-input type="text" placeholder="Name" formControlName="name"></ion-input>
       </ion-item>
-
       <ion-item>
         <ion-icon name="key" item-left color="primeira"></ion-icon>
         <ion-input type="text" placeholder="Nickname" formControlName="nickname"></ion-input>
       </ion-item>
-
       <ion-item>
         <ion-icon name="at" item-left color="primeira"></ion-icon>
         <ion-input type="text" placeholder="Email" formControlName="email" value="{{email}}"></ion-input>
       </ion-item>
-
       <ion-item>
         <ion-icon name="lock" item-left color="primeira"></ion-icon>
         <ion-input type="password" placeholder="Password" formControlName="password" value="{{password}}"></ion-input>
       </ion-item>
-
     </div>
-
     <div padding>
-      <button ion-button full large type="submit" [disabled]="signupForm.invalid">Create Accout</button>
+      <button ion-button full large type="submit" color="primeira" [disabled]="signupForm.invalid">Create Accout</button>
     </div>
-
   </form>
-
 </ion-content>

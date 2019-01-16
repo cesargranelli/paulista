@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content scroll="false">
-  <ion-img width="300" height="270" src="../../assets/imgs/logo-p19.jpg" class="logo-signin"></ion-img>
+  <img width="100%" height="250" src="../../assets/imgs/logo-p19.jpg" class="logo-signin" />
   <form [formGroup]="signinForm" (ngSubmit)="onSubmit(); $event.preventDefault()">
     <div padding-right>
       <ion-item>
@@ -17,8 +17,8 @@
       </ion-item>
     </div>
     <div padding>
-      <button ion-button full type="submit" color="primeira" [disabled]="signinForm.invalid">Enter</button>
+      <button ion-button full large type="submit" color="primeira" [disabled]="signinForm.invalid">Enter</button>
     </div>
   </form>
-  <button ion-button full clear text-center color="primeira" (click)="onSignup()">Sign Up</button>
+  <button ion-button full large clear text-center color="primeira" (click)="onSignup()">Sign Up</button>
 </ion-content>

@@ -10,6 +10,8 @@ import { UserProvider } from '../../providers/user/user';
 
 import { User } from '../../models/user';
 
+import { UserCredential } from 'firebase/auth';
+
 import { DashboardPage } from '../dashboard/dashboard';
 
 @Component({
@@ -64,52 +66,52 @@ export class SignupPage {
 
     this.userService.userExists(slug).first().subscribe((userExists: boolean) => {
 
-        if(!userExists) {
+      if (!userExists) {
 
-          this.authService.createAuthUser({
-            email: formUser.email,
-            password: formUser.password
-          }).then((authUser: User) => {
+        this.authService.createAuthUser({
+          email: formUser.email,
+          password: formUser.password
+        }).then((authUser: UserCredential) => {
 
-            delete formUser.password;
+          delete formUser.password;console.log(authUser);
 
-            formUser.uid  = authUser.uid;
-            formUser.slug = slug;
-            formUser.foto = foto;
-            formUser.position = position;
-            formUser.total = total;
-            formUser.round = round;
+          formUser.uid = authUser.uid;
+          formUser.slug = slug;
+          formUser.foto = foto;
+          formUser.position = position;
+          formUser.total = total;
+          formUser.round = round;
 
-            this.userService.create(formUser)
-              .then(() => {
-                console.log('Usuário cadastrado com sucesso!');
-                this.navCtrl.setRoot(DashboardPage, {
-                  userid: authUser.uid,
-                  slug: slug
-                });
-                loading.dismiss();
-              }).catch((error: any) => {
-                console.log(error);
-                loading.dismiss();
-                this.showAlert(error);
-              });
+          // this.userService.create(formUser)
+          //   .then(() => {
+          //     console.log('Usuário cadastrado com sucesso!');
+          //     this.navCtrl.setRoot(DashboardPage, {
+          //       userid: authUser.uid,
+          //       slug: slug
+          //     });
+          //     loading.dismiss();
+          //   }).catch((error: any) => {
+          //     console.log(error);
+          //     loading.dismiss();
+          //     this.showAlert(error);
+          //   });
 
-          }).catch((error: any) => {
-            console.log(error);
-            loading.dismiss();
-            this.showAlert(error);
-          });
-
-        } else {
-
-          this.showAlert(`O time ${nickname} já está sendo usado em outra conta!`);
+        }).catch((error: any) => {
+          console.log(error);
           loading.dismiss();
+          this.showAlert(error);
+        });
 
-        }
+      } else {
 
+        this.showAlert(`O time ${nickname} já está sendo usado em outra conta!`);
         loading.dismiss();
 
-      });
+      }
+
+      loading.dismiss();
+
+    });
   }
 
   private showLoading(): Loading {

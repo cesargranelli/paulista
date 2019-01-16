@@ -37,20 +37,20 @@ export class SigninPage {
 
     this.authService.authenticated.then(() => {
       let loading: Loading = this.showLoading();
+      console.log(this.authService.userUid);
+      // this.userService.db
+      //   .collection("users")
+      //   .doc(this.authService.userUid)
+      //   .valueChanges()
+      //   .first()
+      //   .subscribe((user: User) => {
+      //     this.navCtrl.setRoot(DashboardPage, {
+      //       userid: this.authService.userUid,
+      //       slug: user.slug
+      //     });
+      //   });
 
-      this.userService.db
-            .collection("users")
-            .doc(this.authService.userUid)
-            .valueChanges()
-            .first()
-            .subscribe((user: User) => {
-              this.navCtrl.setRoot(DashboardPage, {
-                userid: this.authService.userUid,
-                slug: user.slug
-              });
-            });
-
-            loading.dismiss();
+      loading.dismiss();
     }).catch(() => {
       console.log('Não logado');
     });
@@ -72,40 +72,40 @@ export class SigninPage {
 
     this.authService.signin(this.signinForm.value).then((isLogged: boolean) => {
 
-        if(isLogged) {
+      if (isLogged) {
 
-          this.userService.db
-            .collection("users")
-            .doc(this.authService.userUid)
-            .valueChanges()
-            .first()
-            .subscribe((user: User) => {
-              this.navCtrl.setRoot(DashboardPage, {
-                userid: this.authService.userUid,
-                slug: user.slug
-              });
+        this.userService.db
+          .collection("users")
+          .doc(this.authService.userUid)
+          .valueChanges()
+          .first()
+          .subscribe((user: User) => {
+            this.navCtrl.setRoot(DashboardPage, {
+              userid: this.authService.userUid,
+              slug: user.slug
             });
-
-          loading.dismiss();
-          console.log(`Usuário logado com sucesso`);
-
-        }
-
-      }).catch((error: any) => {
-
-        console.log(error);
-        loading.dismiss();
-
-        if (error.code == 'auth/user-not-found') {
-          this.navCtrl.push(SignupPage, {
-            email: this.signinForm.value.email,
-            password: this.signinForm.value.password
           });
-        } else {
-          this.showAlert(error.message);
-        }
 
-      });
+        loading.dismiss();
+        console.log(`Usuário logado com sucesso`);
+
+      }
+
+    }).catch((error: any) => {
+
+      console.log(error);
+      loading.dismiss();
+
+      if (error.code == 'auth/user-not-found') {
+        this.navCtrl.push(SignupPage, {
+          email: this.signinForm.value.email,
+          password: this.signinForm.value.password
+        });
+      } else {
+        this.showAlert(error.message);
+      }
+
+    });
   }
 
   onSignup(): void {

@@ -11,6 +11,7 @@ import { BaseProvider } from './../base/base';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import { errorHandler } from '@angular/platform-browser/src/browser';
 
 @Injectable()
 export class UserProvider extends BaseProvider {
@@ -26,8 +27,13 @@ export class UserProvider extends BaseProvider {
     db.firestore.settings({ timestampsInSnapshots: true });
   }
 
-  create(user: User): Promise<any> {
-    return this.db.collection("users").doc(user.uid).set(user);
+  create(user: User): Promise<void> {
+    return this.db
+      .collection("users")
+      .doc(user.uid)
+      .set(user)
+      .then(() => console.log('Sucesso!'))
+      .catch(errorHandler => console.log(errorHandler));
   }
 
   userExists(slug: string): Observable<boolean> {
