@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -8,10 +7,7 @@ import { BaseProvider } from './../base/base';
 @Injectable()
 export class AuthProvider extends BaseProvider {
 
-  constructor(
-    public angularFireAuth: AngularFireAuth,
-    public http: HttpClient
-  ) {
+  constructor(public angularFireAuth: AngularFireAuth) {
     super();
   }
 

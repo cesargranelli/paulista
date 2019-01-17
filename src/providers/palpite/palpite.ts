@@ -20,7 +20,7 @@ export class PalpiteProvider {
   }
 
   roundMatches(rodada): Observable<any> {
-    return this.http.get(`${this.basepath}/u-tournament/16/season/7528/matches/round/${rodada}`);
+    return this.http.get(`${this.basepath}/u-tournament/372/season/19896/matches/round/${rodada}`);
   }
 
 }

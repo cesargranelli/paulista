@@ -82,19 +82,19 @@ export class SignupPage {
           formUser.total = total;
           formUser.round = round;
 
-          // this.userService.create(formUser)
-          //   .then(() => {
-          //     console.log('Usuário cadastrado com sucesso!');
-          //     this.navCtrl.setRoot(DashboardPage, {
-          //       userid: authUser.uid,
-          //       slug: slug
-          //     });
-          //     loading.dismiss();
-          //   }).catch((error: any) => {
-          //     console.log(error);
-          //     loading.dismiss();
-          //     this.showAlert(error);
-          //   });
+          this.userService.create(formUser)
+            .then(() => {
+              console.log('Usuário cadastrado com sucesso!');
+              this.navCtrl.setRoot(DashboardPage, {
+                userid: authUser.uid,
+                slug: slug
+              });
+              loading.dismiss();
+            }).catch((error: any) => {
+              console.log(error);
+              loading.dismiss();
+              this.showAlert(error);
+            });
 
         }).catch((error: any) => {
           console.log(error);

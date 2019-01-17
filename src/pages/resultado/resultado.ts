@@ -16,26 +16,24 @@ import { ResultadoProvider } from '../../providers/resultado/resultado';
 })
 export class ResultadoPage {
 
-  selectDefault: string = "Rodada 1";
+  selectDefault: string = 'RODADA 1';
 
   rounds$: Observable<any>;
   jogos$: Observable<any>;
 
-  dateNow: string = new Date(new Date().setSeconds(-10800)).toISOString().substr(0, 10).replace(/[- ]/g, "");
+  dateNow: string = new Date(new Date().setSeconds(-10800)).toISOString().substr(0, 10).replace(/[- ]/g, '');
 
-  constructor(
-    public navCtrl: NavController,
+  constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public db: AngularFirestore,
     public loadingCtrl: LoadingController,
-    public rs: ResultadoProvider
-  ) { }
+    public rs: ResultadoProvider) { }
 
   ionViewDidLoad() {
 
     let loading: Loading = this.showLoading();
 
-    this.rounds$ = this.db.collection("rounds").valueChanges();
+    this.rounds$ = this.db.collection('rounds', ref => ref.orderBy('round')).valueChanges();
     this.jogos$ = this.rs.resultados(this.selectDefault);
 
     setTimeout(() => {

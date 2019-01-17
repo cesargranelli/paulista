@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar color="primary">
+  <ion-navbar color="primeira">
     <button ion-button menuToggle icon-only>
       <ion-icon name='menu'></ion-icon>
     </button>
@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <ion-item>
+  <ion-item no-lines>
     <ion-avatar item-start>
       <img src="../../assets/imgs/standard-profile.png">
     </ion-avatar>
@@ -18,21 +18,21 @@
   </ion-item>
   <ion-card>
     <ion-item>
-      <ion-icon name="flag" item-start color="secondary"></ion-icon>
+      <ion-icon name="flag" item-start color="primeira"></ion-icon>
       <ion-label>Posição</ion-label>
       <span item-end>{{ user?.position }}</span>
     </ion-item>
   </ion-card>
   <ion-card>
     <ion-item>
-      <ion-icon name="podium" item-start color="danger"></ion-icon>
+      <ion-icon name="podium" item-start color="segunda"></ion-icon>
       <ion-label>Total</ion-label>
       <span item-end>{{ user?.total }}</span>
     </ion-item>
   </ion-card>
   <ion-card>
     <ion-item>
-      <ion-icon name="pulse" item-start color="primary"></ion-icon>
+      <ion-icon name="pulse" item-start color="terceira"></ion-icon>
       <ion-label>Rodada</ion-label>
       <span item-end>{{ user?.round }}</span>
     </ion-item>

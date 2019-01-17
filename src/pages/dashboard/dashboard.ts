@@ -24,15 +24,12 @@ export class DashboardPage {
   ) { }
 
   ionViewDidLoad() {
-
     let loading = this.showLoading();
 
     this.userService.infoUsuario().subscribe((user: User) => {
-
       this.user = user;
       loading.dismiss();
-
-    });
+     });
 
   }
 

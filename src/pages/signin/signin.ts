@@ -3,8 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AlertController, Loading, LoadingController, NavController, NavParams } from 'ionic-angular';
 
-import 'rxjs/add/operator/first';
-
 import { DashboardPage } from '../dashboard/dashboard';
 import { SignupPage } from '../signup/signup';
 
@@ -21,34 +19,30 @@ export class SigninPage {
 
   signinForm: FormGroup;
 
-  constructor(
-    public alertCtrl: AlertController,
+  constructor(public alertCtrl: AlertController,
     public authService: AuthProvider,
     public formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public navCtrl: NavController,
     public navParams: NavParams,
-    public userService: UserProvider
-  ) {
-
+    public userService: UserProvider) {
+      
     if (this.navParams.get("out")) {
       this.logout();
     }
 
     this.authService.authenticated.then(() => {
       let loading: Loading = this.showLoading();
-      console.log(this.authService.userUid);
-      // this.userService.db
-      //   .collection("users")
-      //   .doc(this.authService.userUid)
-      //   .valueChanges()
-      //   .first()
-      //   .subscribe((user: User) => {
-      //     this.navCtrl.setRoot(DashboardPage, {
-      //       userid: this.authService.userUid,
-      //       slug: user.slug
-      //     });
-      //   });
+      this.userService.db
+        .collection("users")
+        .doc(this.authService.userUid)
+        .valueChanges()
+        .subscribe((user: User) => {
+          this.navCtrl.setRoot(DashboardPage, {
+            userid: this.authService.userUid,
+            slug: user.slug
+          });
+        });
 
       loading.dismiss();
     }).catch(() => {
@@ -73,12 +67,10 @@ export class SigninPage {
     this.authService.signin(this.signinForm.value).then((isLogged: boolean) => {
 
       if (isLogged) {
-
         this.userService.db
           .collection("users")
           .doc(this.authService.userUid)
           .valueChanges()
-          .first()
           .subscribe((user: User) => {
             this.navCtrl.setRoot(DashboardPage, {
               userid: this.authService.userUid,

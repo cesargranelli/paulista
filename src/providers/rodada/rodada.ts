@@ -9,14 +9,10 @@ import { Rodada } from '../../models/rodada';
 @Injectable()
 export class RodadaProvider {
 
-  constructor(
-    private _afs: AngularFirestore
-  ) { }
+  constructor(private _afs: AngularFirestore) { }
 
   get rodadas(): Observable<Rodada[]> {
-
-    return this._afs.collection<Rodada>('rounds').valueChanges();
-
+    return this._afs.collection<Rodada>('rounds', ref => ref.orderBy('round')).valueChanges();
   }
 
 }
