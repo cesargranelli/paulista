@@ -11,7 +11,6 @@ import { BaseProvider } from './../base/base';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import { errorHandler } from '@angular/platform-browser/src/browser';
 
 @Injectable()
 export class UserProvider extends BaseProvider {

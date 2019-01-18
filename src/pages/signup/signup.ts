@@ -10,8 +10,6 @@ import { UserProvider } from '../../providers/user/user';
 
 import { User } from '../../models/user';
 
-import { UserCredential } from 'firebase/auth';
-
 import { DashboardPage } from '../dashboard/dashboard';
 
 @Component({
@@ -71,11 +69,11 @@ export class SignupPage {
         this.authService.createAuthUser({
           email: formUser.email,
           password: formUser.password
-        }).then((authUser: UserCredential) => {
+        }).then(() => {
 
-          delete formUser.password;console.log(authUser);
+          delete formUser.password;
 
-          formUser.uid = authUser.uid;
+          formUser.uid = this.authService.userUid;
           formUser.slug = slug;
           formUser.foto = foto;
           formUser.position = position;
@@ -84,9 +82,9 @@ export class SignupPage {
 
           this.userService.create(formUser)
             .then(() => {
-              console.log('Usuário cadastrado com sucesso!');
+              console.log('Usuário cadastrado com sucesso!');console.log(formUser.uid);
               this.navCtrl.setRoot(DashboardPage, {
-                userid: authUser.uid,
+                userid: formUser.uid,
                 slug: slug
               });
               loading.dismiss();

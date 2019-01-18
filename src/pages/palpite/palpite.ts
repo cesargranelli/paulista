@@ -49,9 +49,9 @@ export class PalpitePage {
     this.slug = this.navParams.get('slug');
 
     this.db.firestore.settings({ timestampsInSnapshots: true });
-    if (this.platform.is("cordova")) {
+    //if (this.platform.is("cordova")) {
       this.basepath = "https://www.sofascore.com";
-    }
+    //}
 
   }
 
