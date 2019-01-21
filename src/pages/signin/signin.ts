@@ -7,6 +7,7 @@ import { DashboardPage } from '../dashboard/dashboard';
 import { SignupPage } from '../signup/signup';
 
 import { AuthProvider } from '../../providers/auth/auth';
+import { CampeonatoProvider } from './../../providers/campeonato/campeonato';
 import { UserProvider } from '../../providers/user/user';
 
 import { User } from '../../models/user';
@@ -25,11 +26,18 @@ export class SigninPage {
     public loadingCtrl: LoadingController,
     public navCtrl: NavController,
     public navParams: NavParams,
-    public userService: UserProvider) {
+    public userService: UserProvider,
+    public cam: CampeonatoProvider) {
       
     if (this.navParams.get("out")) {
       this.logout();
     }
+
+    this.cam.verificaStatus().subscribe(dates => {
+      if ((new Date().getTime() - dates.value) >= 600000 && !dates.update) {
+        this.cam.atualizaStatus(true);
+      }
+    });
 
     this.authService.authenticated.then(() => {
       let loading: Loading = this.showLoading();

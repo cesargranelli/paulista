@@ -92,4 +92,5 @@ const firebaseAppConfig: FirebaseAppConfig = {
     RodadaProvider
   ]
 })
+
 export class AppModule { }

@@ -11,7 +11,7 @@
   <ion-card>
     <ion-list>
       <ion-item>
-        <ion-select [(ngModel)]="selectDefault" (ionChange)="roundMatches()">
+        <ion-select [(ngModel)]="selectDefault" (ionChange)="roundMatches($event)">
           <ion-label>Escolha a rodada...</ion-label>
           <ion-option *ngFor="let option of rounds$ | async" [disabled]="option.prev>dateNow" (ionSelect)="setIdRound(option.round)">{{ option.name }}</ion-option>
         </ion-select>

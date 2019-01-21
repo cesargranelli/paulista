@@ -1,78 +1,79 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 import { AngularFirestore } from '@angular/fire/firestore';
 
-//import { Observable } from "rxjs/Observable";
-import "rxjs/operator/first";
+//import { Observable } from 'rxjs/Observable';
+import 'rxjs/operator/first';
 
-import { Partida } from "../../models/partida";
-import { Rodada } from "../../models/rodada";
-import { User } from "../../models/user";
-import { Aposta } from "../../models/aposta";
-import { Usuario } from "./../../models/usuario";
-import { Observable } from "rxjs/Observable";
+import { Partida } from '../../models/partida';
+import { Rodada } from '../../models/rodada';
+import { User } from '../../models/user';
+import { Aposta } from '../../models/aposta';
+import { Usuario } from './../../models/usuario';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class CampeonatoProvider {
-  total: number = 0;
+  
+  private total: number = 0;
 
   constructor(private db: AngularFirestore) {}
 
-  verificaStatus(): Observable<any> {
+  public verificaStatus(): Observable<any> {
     return this.db
-      .collection("status")
-      .doc("datetime")
+      .collection('status', ref => ref.where('update', '==', true))
+      .doc('update')
       .valueChanges();
   }
 
-  atualizaStatus() {
-    this.db
-      .collection("status")
-      .doc("datetime")
+  public atualizaStatus(update: boolean) {
+    this.db.collection('status')
+      .doc('update')
       .set({
-        value: new Date(new Date().setSeconds(-10800)).getTime()
+        datetime: new Date().toString(),
+        value: new Date().getTime(),
+        update: update
       });
   }
 
   ranking() {
-    //this.atualizaStatus();
+    this.atualizaStatus(false);
 
     //let rodadas: Rodada[] = [];
 
     this.db
-      .collection("rounds", ref => ref.orderBy("round", "desc"))
+      .collection('rounds', ref => ref.orderBy('round', 'desc'))
       .valueChanges()
-      .first()
       .subscribe((rounds: Rodada[]) => {
         rounds.forEach(round => {
-          let hoje = new Date(new Date().setSeconds(-10800)).toISOString().substr(0, 10).replace(/[- ]/g, "");
-          let fech = round.closed.replace(/[- ]/g, "");
-          let next = round.next.replace(/[- ]/g, "");
+          let hoje = new Date(new Date().setSeconds(-10800)).toISOString().substr(0, 10).replace(/[- ]/g, '');
+          let fech = round.closed.replace(/[- ]/g, '');
+          let next = round.next.replace(/[- ]/g, '');
           if (hoje >= fech) {
-            round.status = "campeonato";
+            round.status = 'campeonato';
             if (hoje >= fech && hoje < next) {
-              round.status = "rodada";
+              round.status = 'rodada';
             }
-            console.log("Atualizar pontuações..." + round.status + " - " + round.round);
+            console.log('Atualizar pontuações...' + round.status + ' - ' + round.round);
             this.pontuacoes(round);
           }
         });
       });
   }
 
-  pontuacoes(rodada: Rodada) {
+  private pontuacoes(rodada: Rodada) {
     this.db
-      .collection("users"/*, ref => ref.where("slug", "==", "rockman-dx")*/)
+      .collection('users', ref => ref.where('slug', '==', 'rockman-dx'))
       .valueChanges()
       .first()
       .subscribe(users => {
         users.map((user: Usuario) => {
-          if (rodada.status == "rodada") {
-            this.db.collection("ranking").doc(user.uid).delete();
-            this.db.collection("ranking").doc(user.uid).valueChanges()
+          if (rodada.status == 'rodada') {
+            this.db.collection('ranking').doc(user.uid).delete();
+            this.db.collection('ranking').doc(user.uid).valueChanges()
               .subscribe((values: Usuario) => {
                 if (!values) {
-                  this.db.collection("ranking").doc(user.uid)
+                  this.db.collection('ranking').doc(user.uid)
                     .set({
                       slug: user.slug,
                       nick: user.nickname,
@@ -90,29 +91,29 @@ export class CampeonatoProvider {
                 }
               });
           }
-          //this.usuarios(user, rodada);
+          this.usuarios(user, rodada);
         });
       });
   }
 
-  usuarios(usuario: Usuario, rodada: Rodada) {
+  private usuarios(usuario: Usuario, rodada: Rodada) {
     this.db
-      .collection("users"/*, ref => ref.where("slug", "==", usuario.slug)*/)
+      .collection('users', ref => ref.where('slug', '==', usuario.slug))
       .valueChanges()
       .first()
       .subscribe(users => {
         users.map((user: User) => {
-          //console.log("Usuário..." + user.slug);
+          //console.log('Usuário...' + user.slug);
           this.palpites(rodada, usuario);
         });
       });
   }
 
-  palpites(rodada: Rodada, usuario: Usuario) {
+  private palpites(rodada: Rodada, usuario: Usuario) {
     let r = 1;
 
     this.db
-      .collection("hunches")
+      .collection('hunches')
       .doc(usuario.slug)
       .collection(String(rodada.round))
       .valueChanges()
@@ -125,7 +126,7 @@ export class CampeonatoProvider {
       });
   }
 
-  resultados(
+  private resultados(
     rodada: Rodada,
     usuario: Usuario,
     partida: Partida,
@@ -140,13 +141,12 @@ export class CampeonatoProvider {
     //}
 
     this.db
-      .collection("resultados")
+      .collection('resultados')
       .doc(String(rodada.round))
       .collection(String(rodada.round), ref =>
-        ref.where("id", "==", partida.id)
+        ref.where('id', '==', partida.id)
       )
       .valueChanges()
-      .first()
       .subscribe(resultados => {
         resultados.map((resultado: Aposta) => {
           if (
@@ -155,7 +155,7 @@ export class CampeonatoProvider {
             resultado.homeScore != null &&
             resultado.awayScore != null
           ) {
-            if (rodada.status == "rodada") {
+            if (rodada.status == 'rodada') {
               usuario.rodada =
                 usuario.rodada +
                 this.somarPontos(rodada, usuario, partida, resultado);
@@ -173,17 +173,16 @@ export class CampeonatoProvider {
             (part == 2 && rodada.round == 6) ||
             (part == 1 && rodada.round == 7)
           ) {
-            //console.log(usuario.slug + "-" + rodada.round + "-" + usuario.rodada + "-" + usuario.total);
+            //console.log(usuario.slug + '-' + rodada.round + '-' + usuario.rodada + '-' + usuario.total);
 
             this.db
-              .collection("ranking")
+              .collection('ranking')
               .doc(usuario.uid)
               .valueChanges()
-              .first()
               .subscribe((values: Usuario) => {
-                if (rodada.status == "rodada") {
+                if (rodada.status == 'rodada') {
                   this.db
-                    .collection("ranking")
+                    .collection('ranking')
                     .doc(usuario.uid)
                     .update({
                       atual: usuario.rodada,
@@ -194,7 +193,7 @@ export class CampeonatoProvider {
                 }
                 if (rodada.round == 1) {
                   this.db
-                    .collection("ranking")
+                    .collection('ranking')
                     .doc(usuario.uid)
                     .update({
                       rodada1: usuario.total,
@@ -204,7 +203,7 @@ export class CampeonatoProvider {
                     });
                 } else if (rodada.round == 2) {
                   this.db
-                    .collection("ranking")
+                    .collection('ranking')
                     .doc(usuario.uid)
                     .update({
                       rodada2: usuario.total,
@@ -214,7 +213,7 @@ export class CampeonatoProvider {
                     });
                 } else if (rodada.round == 3) {
                   this.db
-                    .collection("ranking")
+                    .collection('ranking')
                     .doc(usuario.uid)
                     .update({
                       rodada3: usuario.total,
@@ -224,7 +223,7 @@ export class CampeonatoProvider {
                     });
                 } else if (rodada.round == 4) {
                   this.db
-                    .collection("ranking")
+                    .collection('ranking')
                     .doc(usuario.uid)
                     .update({
                       oitavas: usuario.total,
@@ -234,7 +233,7 @@ export class CampeonatoProvider {
                     });
                 } else if (rodada.round == 5) {
                   this.db
-                    .collection("ranking")
+                    .collection('ranking')
                     .doc(usuario.uid)
                     .update({
                       quartas: usuario.total,
@@ -244,7 +243,7 @@ export class CampeonatoProvider {
                     });
                 } else if (rodada.round == 6) {
                   this.db
-                    .collection("ranking")
+                    .collection('ranking')
                     .doc(usuario.uid)
                     .update({
                       semifinal: usuario.total,
@@ -254,7 +253,7 @@ export class CampeonatoProvider {
                     });
                 } else if (rodada.round == 7) {
                   this.db
-                    .collection("ranking")
+                    .collection('ranking')
                     .doc(usuario.uid)
                     .update({
                       final: usuario.total,
@@ -269,7 +268,7 @@ export class CampeonatoProvider {
       });
   }
 
-  somarPontos(
+  private somarPontos(
     rodada: Rodada,
     usuario: User,
     partida: Partida,

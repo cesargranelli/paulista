@@ -26,14 +26,12 @@ export class CampeonatoPage {
 
   i: number = 1;
 
-  constructor(
-    public nav: NavController,
+  constructor(public nav: NavController,
     public par: NavParams,
     //private _rod: RodadaProvider,
     public cam: CampeonatoProvider,
     public load: LoadingController,
-    private db: AngularFirestore
-  ) { }
+    private db: AngularFirestore) { }
 
   executar() {
     console.log('Rodadas: ' + this._rodadas);
