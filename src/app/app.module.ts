@@ -29,6 +29,7 @@ import { CampeonatoProvider } from '../providers/campeonato/campeonato';
 import { PalpiteProvider } from './../providers/palpite/palpite';
 import { RodadaProvider } from '../providers/rodada/rodada';
 import { ApostaPalpitesPage } from '../pages/aposta-palpites/aposta-palpites';
+import { RankingPage } from '../pages/ranking/ranking';
 
 const firebaseAppConfig: FirebaseAppConfig = {
   apiKey: 'AIzaSyCiyZ8LHN-jvSgjuXiFN344J67Bh-FyOiE',
@@ -50,7 +51,8 @@ const firebaseAppConfig: FirebaseAppConfig = {
     ProfilePage,
     ResultadoPage,
     SigninPage,
-    SignupPage
+    SignupPage,
+    RankingPage
   ],
   imports: [
     BrowserModule,
@@ -73,7 +75,8 @@ const firebaseAppConfig: FirebaseAppConfig = {
     ProfilePage,
     ResultadoPage,
     SigninPage,
-    SignupPage
+    SignupPage,
+    RankingPage
   ],
   providers: [
     {

@@ -36,7 +36,6 @@ export class ResultadoProvider {
 
     let id: string;
 
-      (round == 'RODADA 1') ? id = '1' : null;
       (round == 'RODADA 2') ? id = '2' : null;
       (round == 'RODADA 3') ? id = '3' : null;
       (round == 'RODADA 4') ? id = '4' : null;
@@ -70,7 +69,6 @@ export class ResultadoProvider {
 
     let idRound;
 
-    (id == '1') ? idRound = '1' : null;
     (id == '2') ? idRound = '2' : null;
     (id == '3') ? idRound = '3' : null;
     (id == '4') ? idRound = '4' : null;
@@ -130,7 +128,6 @@ export class ResultadoProvider {
 
     let idRound;
 
-    (id == '1') ? idRound = '1' : null;
     (id == '2') ? idRound = '2' : null;
     (id == '3') ? idRound = '3' : null;
     (id == '4') ? idRound = '4' : null;

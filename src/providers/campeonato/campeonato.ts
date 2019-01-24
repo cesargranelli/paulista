@@ -14,10 +14,10 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class CampeonatoProvider {
-  
-  private total: number = 0;
 
-  constructor(private db: AngularFirestore) {}
+  //private total: number = 0;
+
+  constructor(private db: AngularFirestore) { }
 
   public verificaStatus(): Observable<any> {
     return this.db
@@ -37,33 +37,24 @@ export class CampeonatoProvider {
   }
 
   ranking() {
-    this.atualizaStatus(false);
-
-    //let rodadas: Rodada[] = [];
-
-    this.db
-      .collection('rounds', ref => ref.orderBy('round', 'desc'))
+    this.db.collection('rounds', ref => ref.where('timestamp', '<=', Number(new Date().getTime())).orderBy('timestamp', 'desc'))
       .valueChanges()
       .subscribe((rounds: Rodada[]) => {
         rounds.forEach(round => {
-          let hoje = new Date(new Date().setSeconds(-10800)).toISOString().substr(0, 10).replace(/[- ]/g, '');
-          let fech = round.closed.replace(/[- ]/g, '');
-          let next = round.next.replace(/[- ]/g, '');
-          if (hoje >= fech) {
-            round.status = 'campeonato';
-            if (hoje >= fech && hoje < next) {
-              round.status = 'rodada';
-            }
-            console.log('Atualizar pontuações...' + round.status + ' - ' + round.round);
-            this.pontuacoes(round);
+          let hoje = Number(new Date().getTime());
+          let fech = Number(round.closed);
+          let next = Number(new Date(round.next).getTime());
+          if (/* hoje >= fech &&  */hoje < next) {
+            round.status = 'rodada';
           }
+          console.log('Atualizar pontuações...' + round.status + ' - ' + round.round);
+          this.pontuacoes(round);
         });
       });
   }
 
   private pontuacoes(rodada: Rodada) {
-    this.db
-      .collection('users', ref => ref.where('slug', '==', 'rockman-dx'))
+    this.db.collection('users', ref => ref.where('slug', '==', 'rockman-dx'))
       .valueChanges()
       .first()
       .subscribe(users => {
@@ -79,13 +70,6 @@ export class CampeonatoProvider {
                       nick: user.nickname,
                       uid: user.uid,
                       atual: 0,
-                      rodada1: 0,
-                      rodada2: 0,
-                      rodada3: 0,
-                      oitavas: 0,
-                      quartas: 0,
-                      semifinal: 0,
-                      final: 0,
                       total: 0
                     });
                 }
@@ -100,7 +84,6 @@ export class CampeonatoProvider {
     this.db
       .collection('users', ref => ref.where('slug', '==', usuario.slug))
       .valueChanges()
-      .first()
       .subscribe(users => {
         users.map((user: User) => {
           //console.log('Usuário...' + user.slug);
@@ -117,7 +100,6 @@ export class CampeonatoProvider {
       .doc(usuario.slug)
       .collection(String(rodada.round))
       .valueChanges()
-      .first()
       .subscribe(partidas => {
         partidas.map((partida: Partida) => {
           this.resultados(rodada, usuario, partida, r);
@@ -126,12 +108,10 @@ export class CampeonatoProvider {
       });
   }
 
-  private resultados(
-    rodada: Rodada,
+  private resultados(rodada: Rodada,
     usuario: Usuario,
     partida: Partida,
-    part?: number
-  ) {
+    part?: number) {
     //if (usuario.rodada == undefined) {
     usuario.rodada = 0;
     //}
@@ -140,8 +120,7 @@ export class CampeonatoProvider {
     usuario.total = 0;
     //}
 
-    this.db
-      .collection('resultados')
+    this.db.collection('resultados')
       .doc(String(rodada.round))
       .collection(String(rodada.round), ref =>
         ref.where('id', '==', partida.id)
@@ -165,105 +144,28 @@ export class CampeonatoProvider {
                 this.somarPontos(rodada, usuario, partida, resultado);
             }
           }
+          //console.log(usuario.slug + '-' + rodada.round + '-' + usuario.rodada + '-' + usuario.total);
 
-          if (
-            part == 16 ||
-            (part == 8 && rodada.round == 4) ||
-            (part == 4 && rodada.round == 5) ||
-            (part == 2 && rodada.round == 6) ||
-            (part == 1 && rodada.round == 7)
-          ) {
-            //console.log(usuario.slug + '-' + rodada.round + '-' + usuario.rodada + '-' + usuario.total);
-
-            this.db
-              .collection('ranking')
-              .doc(usuario.uid)
-              .valueChanges()
-              .subscribe((values: Usuario) => {
-                if (rodada.status == 'rodada') {
-                  this.db
-                    .collection('ranking')
-                    .doc(usuario.uid)
-                    .update({
-                      atual: usuario.rodada,
-                      datetime: new Date(
-                        new Date().setSeconds(-10800)
-                      ).getTime()
-                    });
-                }
-                if (rodada.round == 1) {
-                  this.db
-                    .collection('ranking')
-                    .doc(usuario.uid)
-                    .update({
-                      rodada1: usuario.total,
-                      datetime: new Date(
-                        new Date().setSeconds(-10800)
-                      ).getTime()
-                    });
-                } else if (rodada.round == 2) {
-                  this.db
-                    .collection('ranking')
-                    .doc(usuario.uid)
-                    .update({
-                      rodada2: usuario.total,
-                      datetime: new Date(
-                        new Date().setSeconds(-10800)
-                      ).getTime()
-                    });
-                } else if (rodada.round == 3) {
-                  this.db
-                    .collection('ranking')
-                    .doc(usuario.uid)
-                    .update({
-                      rodada3: usuario.total,
-                      datetime: new Date(
-                        new Date().setSeconds(-10800)
-                      ).getTime()
-                    });
-                } else if (rodada.round == 4) {
-                  this.db
-                    .collection('ranking')
-                    .doc(usuario.uid)
-                    .update({
-                      oitavas: usuario.total,
-                      datetime: new Date(
-                        new Date().setSeconds(-10800)
-                      ).getTime()
-                    });
-                } else if (rodada.round == 5) {
-                  this.db
-                    .collection('ranking')
-                    .doc(usuario.uid)
-                    .update({
-                      quartas: usuario.total,
-                      datetime: new Date(
-                        new Date().setSeconds(-10800)
-                      ).getTime()
-                    });
-                } else if (rodada.round == 6) {
-                  this.db
-                    .collection('ranking')
-                    .doc(usuario.uid)
-                    .update({
-                      semifinal: usuario.total,
-                      datetime: new Date(
-                        new Date().setSeconds(-10800)
-                      ).getTime()
-                    });
-                } else if (rodada.round == 7) {
-                  this.db
-                    .collection('ranking')
-                    .doc(usuario.uid)
-                    .update({
-                      final: usuario.total,
-                      datetime: new Date(
-                        new Date().setSeconds(-10800)
-                      ).getTime()
-                    });
-                }
-              });
-          }
+          this.db.collection('ranking')
+            .doc(usuario.uid)
+            .valueChanges()
+            .subscribe((values: Usuario) => {
+              if (rodada.status == 'rodada') {
+                this.db.collection('ranking')
+                  .doc(usuario.uid)
+                  .update({
+                    atual: usuario.rodada,
+                    datetime: new Date().getTime()
+                  });
+              } else {
+                this.db.collection('ranking')
+                  .doc(usuario.uid)
+                  .update({
+                    total: usuario.total,
+                    datetime: new Date().getTime()
+                  });
+              }
+            });
         });
       });
   }
@@ -314,14 +216,14 @@ export class CampeonatoProvider {
       partida.homeScore > partida.awayScore &&
       resultado.homeScore > resultado.awayScore &&
       partida.homeScore - partida.awayScore ==
-        resultado.homeScore - resultado.awayScore
+      resultado.homeScore - resultado.awayScore
     ) {
       return 15;
     } else if (
       partida.awayScore > partida.homeScore &&
       resultado.awayScore > resultado.homeScore &&
       partida.awayScore - partida.homeScore ==
-        resultado.awayScore - resultado.homeScore
+      resultado.awayScore - resultado.homeScore
     ) {
       return 15;
     }
@@ -348,14 +250,14 @@ export class CampeonatoProvider {
       partida.homeScore > partida.awayScore &&
       resultado.homeScore > resultado.awayScore &&
       partida.homeScore - partida.awayScore !=
-        resultado.homeScore - resultado.awayScore
+      resultado.homeScore - resultado.awayScore
     ) {
       return 10;
     } else if (
       partida.awayScore > partida.homeScore &&
       resultado.awayScore > resultado.homeScore &&
       partida.awayScore - partida.homeScore !=
-        resultado.awayScore - resultado.homeScore
+      resultado.awayScore - resultado.homeScore
     ) {
       return 10;
     }

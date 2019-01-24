@@ -16,7 +16,7 @@ import { ResultadoProvider } from '../../providers/resultado/resultado';
 })
 export class ResultadoPage {
 
-  selectDefault: string = 'RODADA 1';
+  selectDefault: string = 'RODADA 2';
 
   rounds$: Observable<any>;
   jogos$: Observable<any>;

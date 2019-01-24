@@ -2,7 +2,7 @@ import { RodadaProvider } from './../../providers/rodada/rodada';
 import { Component, Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
-import { AlertController, Loading, LoadingController, IonicPage, NavParams, Platform } from 'ionic-angular';
+import { AlertController, Loading, LoadingController, IonicPage, NavParams } from 'ionic-angular';
 
 import { AngularFirestore } from '@angular/fire/firestore';
 
@@ -21,10 +21,10 @@ export class PalpitePage {
   public userid: string;
   public slug: string;
 
-  public idRound: string = '1';
+  public idRound: string = '2';
 
   public basepath = '/api';
-  public selectDefault: string = 'RODADA 1';
+  public selectDefault: string = 'RODADA 2';
   public dates$: Observable<any>;
   public matches$: Observable<any>;
   public roundMatches$: Observable<any>;
@@ -32,12 +32,11 @@ export class PalpitePage {
   hunchForm: FormGroup;
 
   // Teste
-  dateNow: string = new Date(new Date().setSeconds(-10800)).toISOString().substring(0, 10);
-  dateHoje: number = new Date(new Date().setSeconds(-10800)).getTime();
+  dateNow: number = new Date().getTime();
+  dateHoje: number = new Date().getTime();
   dateFech: number;
 
   constructor(private navParams: NavParams,
-    private platform: Platform,
     private db: AngularFirestore,
     public http: HttpClient,
     public formBuilder: FormBuilder,
@@ -49,7 +48,7 @@ export class PalpitePage {
     this.slug = this.navParams.get('slug');
 
     this.db.firestore.settings({ timestampsInSnapshots: true });
-    //if (this.platform.is('cordova')) {
+    //if (thi.is('cordova')) {
       this.basepath = 'https://www.sofascore.com';
     //}
 
@@ -81,7 +80,6 @@ export class PalpitePage {
   addMatches(id: string) {
     let idRound: string;
 
-    (id == '1') ? idRound = '1' : null;
     (id == '2') ? idRound = '2' : null;
     (id == '3') ? idRound = '3' : null;
     (id == '4') ? idRound = '4' : null;

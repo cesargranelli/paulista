@@ -3,7 +3,7 @@ import { Platform, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { CampeonatoPage } from '../pages/campeonato/campeonato';
+import { RankingPage } from '../pages/ranking/ranking';
 import { PalpitePage } from '../pages/palpite/palpite';
 import { ProfilePage } from '../pages/profile/profile';
 import { ResultadoPage } from '../pages/resultado/resultado';
@@ -25,7 +25,7 @@ export class MyApp {
     { titulo: 'Perfil', componente: ProfilePage, icone: 'person' },
     { titulo: 'Palpite', componente: PalpitePage, icone: 'clipboard' },
     { titulo: 'Resultado', componente: ResultadoPage, icone: 'paper' },
-    { titulo: 'Ranking', componente: CampeonatoPage, icone: 'flag' },
+    { titulo: 'Ranking', componente: RankingPage, icone: 'flag' },
     { titulo: 'Sair', componente: SigninPage, icone: 'log-out' }
   ];
 

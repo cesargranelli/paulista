@@ -7,5 +7,6 @@ export interface Rodada {
     prev: string;
     round: number;
     status: string;
+    timestamp: number;
 
 }

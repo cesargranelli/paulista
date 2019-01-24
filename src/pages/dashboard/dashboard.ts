@@ -36,6 +36,8 @@ export class DashboardPage {
       }
     });
 
+    this.cam.atualizaStatus(false);
+
   }
 
   private showLoading(): Loading {

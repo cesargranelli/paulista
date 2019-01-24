@@ -40,7 +40,6 @@ export class CampeonatoPage {
   ionViewDidLoad() {
 
     let loading: Loading = this.showLoading();
-
     //let hoje = new Date(new Date().setSeconds(-10800)).getTime();
 /*
     this.cam.verificaStatus().subscribe(dates => {
