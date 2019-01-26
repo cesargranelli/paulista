@@ -104,8 +104,7 @@ export class PalpitePage {
       for (let tournament in matches.roundMatches.tournaments) {
         for (let event in matches.roundMatches.tournaments[tournament].events) {
           let match = matches.roundMatches.tournaments[tournament].events[event];
-          this.db
-            .collection('hunches')
+          this.db.collection('hunches')
             .doc(this.slug)
             .collection(id)
             .doc(String(match.id))

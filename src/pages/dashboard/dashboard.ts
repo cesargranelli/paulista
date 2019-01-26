@@ -28,15 +28,9 @@ export class DashboardPage {
     this.userService.infoUsuario().subscribe((user: User) => {
       this.user = user;
       loading.dismiss();
-     });
-
-     this.cam.verificaStatus().subscribe(dates => {
-      if (dates.update) {
-        this.cam.ranking();
-      }
     });
 
-    this.cam.atualizaStatus(false);
+    this.cam.atualizaDados();
 
   }
 

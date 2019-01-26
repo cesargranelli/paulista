@@ -33,11 +33,11 @@ export class SigninPage {
       this.logout();
     }
 
-    this.cam.verificaStatus().subscribe(dates => {
-      if ((new Date().getTime() - dates.value) >= 600000 && !dates.update) {
-        this.cam.atualizaStatus(true);
-      }
-    });
+    // this.cam.verificaStatus().subscribe(dates => {
+    //   if ((new Date().getTime() - dates.value) >= 600000 && !dates.update) {
+    //     this.cam.atualizaStatus(true);
+    //   }
+    // });
 
     this.authService.authenticated.then(() => {
       let loading: Loading = this.showLoading();

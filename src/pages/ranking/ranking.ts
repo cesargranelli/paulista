@@ -26,7 +26,6 @@ export class RankingPage {
 
     let loading: Loading = this.showLoading();
 
-    this.cam.ranking();
     this.ranking$ = this.db.collection("ranking", ref => ref.orderBy("total", "desc")).valueChanges();
 
     setTimeout(() => {

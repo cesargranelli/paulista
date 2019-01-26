@@ -46,7 +46,7 @@ export class CampeonatoPage {
 
       if ((hoje - Number(dates.value)) > 3600000 || !dates) {
 */
-        this.cam.ranking();
+        //this.cam.ranking();
 /*
         this.db.collection("ranking").valueChanges().subscribe((rankings: any) => {
           rankings.map((ranking: any) => {
@@ -91,7 +91,7 @@ export class CampeonatoPage {
         });
       });
 */
-    this.ranking$ = this.db.collection("campeonato", ref => ref.orderBy("total", "desc")).valueChanges();
+    this.ranking$ = this.db.collection("ranking", ref => ref.orderBy("total", "desc")).valueChanges();
 
     setTimeout(() => {
       loading.dismiss();
